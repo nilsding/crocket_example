@@ -1,0 +1,24 @@
+name: crocket_example
+version: 0.1.0
+
+authors:
+  - Georg Gadinger <nilsding@nilsding.org>
+
+targets:
+  crocket_example:
+    main: src/crocket_example.cr
+
+dependencies:
+  crocket:
+    github: nilsding/crocket
+    branch: master
+  libao:
+    github: mjago/libao
+    branch: master
+  libmpg123:
+    github: mjago/libmpg123
+    branch: master
+
+crystal: 0.27.0
+
+license: MIT

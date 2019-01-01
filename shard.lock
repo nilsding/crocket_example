@@ -1,0 +1,14 @@
+version: 1.0
+shards:
+  crocket:
+    github: nilsding/crocket
+    commit: 913d5a7060654cdf7ee341a0c9590804d4fcc105
+
+  libao:
+    github: mjago/libao
+    commit: 03ccf5fb61e5de9bf702a4e16ff21e0d645ddfa5
+
+  libmpg123:
+    github: mjago/libmpg123
+    commit: 0b2b7d9fad83d4106d7545e083e86de66065dba6
+
