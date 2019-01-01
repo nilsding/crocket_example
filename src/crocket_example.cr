@@ -1,13 +1,37 @@
 require "crocket"
 require "./audio"
 
-DATA_DIR = File.expand_path(File.join(__DIR__, "../data"))
-audio_path = File.join(DATA_DIR, "audio.mp3")
+{% if flag?(:sync_player) %}
+require "./file_storage"
+
+FileStorage.unpack
+at_exit do
+  FileStorage.cleanup
+end
+{% end %}
+
+audio_path = {% if flag?(:sync_player) %}
+               File.join(FileStorage.tmp_dir, "audio.mp3")
+             {% else %}
+               "data/audio.mp3"
+             {% end %}
 
 audio = Audio.new
 audio.open(audio_path, bpm: 150, rows_per_beat: 4)
 
-device = Crocket::SyncDevice.new("data/sync")
+device = Crocket::SyncDevice.new(
+  {% if flag?(:sync_player) %}
+  # Workaround: librocket-player does not like absolute paths
+  # TODO: look figure out how to use Rocket's `sync_set_io_cb` with
+  # BakedFileSystem
+  File.join(
+    Array.new(Dir.current.split("/").size - 1, "..").join("/"),
+    FileStorage.tmp_dir,
+    "sync")
+  {% else %}
+  "data/sync"
+  {% end %}
+)
 
 abort "failed to connect to host" unless device.tcp_connect("localhost")
 
@@ -44,6 +68,7 @@ loop do
   b = (clear_b[row] * 255).ceil.to_i
 
   puts "\033[48;2;#{r};#{g};#{b}m"
+  # Fiber.yield
 end
 
 device.save_tracks

@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: 0.9.8
+
   crocket:
     github: nilsding/crocket
     commit: 913d5a7060654cdf7ee341a0c9590804d4fcc105
